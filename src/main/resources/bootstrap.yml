@@ -1,0 +1,59 @@
+server:
+  port: 9000
+  servlet:
+    context-path: /recpag
+spring:
+  security:
+  application:
+    name: recpag-service
+  datasource:
+    hikari:
+      maximum-pool-size: 25
+    url: jdbc:h2:file:./recpag-app;DB_CLOSE_ON_EXIT=TRUE
+    platform: h2
+    username: recpag
+    password: recpag
+    driverClassName: org.h2.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        show_sql: false
+        use_sql_comments: false
+        format_sql: false
+        type: trace
+        jdbc:
+          time_zone: UTC-3
+  ###
+  #   H2 Settings
+  ###
+  h2:
+    console:
+      enabled: true
+      path: /console
+      settings:
+        trace: false
+        web-allow-others: true
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+    jmx:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+    shutdown:
+      enabled: false
+    metrics: true
+  health:
+    mongo:
+      enabled: false
+logging:
+  file: recPag-service.log
+pagination:
+  qtd_by_page: 100
