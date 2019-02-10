@@ -5,10 +5,9 @@ import br.com.hackmovile.recpag.enums.TransacaoTipo;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotEmpty;
-import java.io.Serializable;
 import java.util.StringJoiner;
 
-public class TransacaoDto implements Serializable {
+public class TransacaoDto {
 
     @NotEmpty(message = "origem não pode ser null.")
     @Length(min = 10, max = 14, message = "origem pode ter no minimo 10 e maximo 14 caracteres.")

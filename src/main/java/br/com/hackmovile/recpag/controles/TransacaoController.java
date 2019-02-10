@@ -1,6 +1,7 @@
 package br.com.hackmovile.recpag.controles;
 
-import br.com.hackmovile.recpag.cliente.IClienteZoop;
+import br.com.hackmovile.recpag.cliente.IClienteWavy;
+import br.com.hackmovile.recpag.cliente.dto.WavyDto;
 import br.com.hackmovile.recpag.controles.utils.ITransacaoController;
 import br.com.hackmovile.recpag.dtos.PagamentoDto;
 import br.com.hackmovile.recpag.dtos.RecebimentoDto;
@@ -19,12 +20,16 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import javax.validation.Valid;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.util.Arrays;
 import java.util.Date;
-import java.util.Optional;
+import java.util.HashMap;
 
 @RestController
 @RequestMapping("/api/v1/transacao")
@@ -40,6 +45,9 @@ public class TransacaoController implements ITransacaoController {
     @Autowired
     ITransacaoServico transacaoServico;
 
+    @Autowired
+    RestTemplate restTemplate;
+
     @Override
     @PostMapping("/pagamento")
     public ResponseEntity<Response<PagamentoDto>> pagamento(@Valid @RequestBody PagamentoDto pagamentoDto) {
@@ -49,10 +57,16 @@ public class TransacaoController implements ITransacaoController {
         Conta contaComprador = contaServico.findByChave(pagamentoDto.getOrigem());
 
         //TODO Temos que verificar o saldo do pagador
-
-        if (contaComprador != null && contaVendedor != null) {
+        if (contaComprador != null && contaVendedor != null &&
+                !(pagamentoDto.getDestino().trim().equalsIgnoreCase(pagamentoDto.getOrigem().trim()))) {
             try {
                 Float valor = Monetario.converteToBig(pagamentoDto.getValor()).floatValue();
+                Float saldo = transacaoServico.saldoConta(contaComprador.getId());
+
+                if (saldo != null && saldo < valor) {
+                    response.addError(String.format("Sem saldo suficiente para realizar a transacao.", saldo));
+                }
+
                 String autenticador = ChaveSecreta.getHashTransacao(
                         pagamentoDto.getOrigem(),
                         pagamentoDto.getDestino(),
@@ -67,8 +81,12 @@ public class TransacaoController implements ITransacaoController {
                         pagamentoDto.getAutenticador(), new Date(), contaComprador,
                        contaVendedor, pagamentoDto.getTransacaoStatus(), pagamentoDto.getTransacaoTipo()));
 
+                response.setData(pagamentoDto);
+
+                sendSms(contaVendedor, "Venda Realizada com sucesso !!!");
+                sendSms(contaComprador, "Compra Realizada com sucesso ;) ");
             } catch (Exception e) {
-                response.addError("Erro ao capturar valor do pagamento, favor repita a operacao");
+                response.addError("Erro ao capturar valor do pagamento, favor repita a operacao! :(");
             }
         }
 
@@ -92,10 +110,75 @@ public class TransacaoController implements ITransacaoController {
                                                            @RequestParam(value = "conta", defaultValue = "") String conta) {
         Response<Page<TransacaoDto>> response = new Response<>();
         PageRequest pageRequest = PageRequest.of(pag, this.paginacao, Sort.Direction.valueOf(dir), ord);
+        Page<Transacao> transacao = null;
 
-        response.setData(null);
+        if (!conta.equalsIgnoreCase("")) {
+            Conta contaFiltro = contaServico.findByChave(conta);
+
+            if (contaFiltro != null) {
+
+                transacao = transacaoServico.findAllByOrigemOrDestinoOrderByIdAsc(
+                        contaFiltro, contaFiltro, pageRequest);
+
+                Page<TransacaoDto> transacaoDtos = transacao.map(
+                        trans -> toTransacaoDto(trans)
+                );
+
+                response.addExtra("saldo", transacaoServico.saldoConta(contaFiltro.getId()) );
+                response.setData(transacaoDtos);
+            }
+
+        }
 
         return ResponseEntity.ok(response);
+    }
+
+    @Override
+    @GetMapping("/")
+    public ResponseEntity<HashMap<String, Object>> listarTransacoes(@RequestParam(value = "pag", defaultValue = "0") Integer pag,
+                                                                    @RequestParam(value = "ord", defaultValue = "id") String ord,
+                                                                    @RequestParam(value = "dir", defaultValue = "DESC") String dir,
+                                                                    @RequestParam(value = "conta", defaultValue = "") String conta) {
+        HashMap<String, Object> map = new HashMap<>();
+
+        if (!conta.equalsIgnoreCase("")) {
+            Conta contaFiltro = contaServico.findByChave(conta);
+
+            if (contaFiltro != null) {
+
+                map.put("transacoes", transacaoServico.findAllByOrigemOrDestinoOrderByIdAsc(contaFiltro, contaFiltro));
+
+                Float saldo = transacaoServico.saldoConta(contaFiltro.getId());
+                DecimalFormat df = new DecimalFormat("########.##");
+                df.setRoundingMode(RoundingMode.DOWN);
+
+                map.put("saldo", saldo == null ? 0.00 : df.format(saldo));
+            }
+        }
+
+        return ResponseEntity.ok(map);
+    }
+
+    private TransacaoDto toTransacaoDto(Transacao transacao) {
+        return new TransacaoDto(transacao.getOrigem().getNome(),
+                transacao.getDestino().getNome(),
+                transacao.getValorTransacao().toString(), transacao.getAutenticador(),
+                transacao.getTransacaoTipo(), transacao.getTransacaoStatus(),
+                transacao.getAutenticador());
+    }
+
+    private void sendSms(Conta conta, String msg) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            headers.set("Access-key", "ek-12548965369");
+            HttpEntity<WavyDto> entity = new HttpEntity<WavyDto>(new WavyDto(conta.getTelefone(), msg),headers);
+
+             restTemplate.exchange(
+                    "http://messaging-api.wavy.global:8080/v1/sms/send", HttpMethod.POST, entity, String.class).getBody();
+        } catch (Exception ex) {}
+
     }
 
 }

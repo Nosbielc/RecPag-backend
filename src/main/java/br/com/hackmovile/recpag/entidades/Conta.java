@@ -24,18 +24,30 @@ public class Conta implements Serializable {
     @Column(name = "str_chave_comprador", nullable = false)
     private String chaveComprador;
 
+    @Column(name = "str_telefone", nullable = false)
+    private String telefone;
+
+    public Conta() {
+    }
+
+    public Conta(String nome, String chave, String chaveVendedor, String chaveComprador, String telefone) {
+        this.nome = nome;
+        this.chave = chave;
+        this.chaveVendedor = chaveVendedor;
+        this.chaveComprador = chaveComprador;
+        this.telefone = telefone;
+    }
+
     @Override
     public String toString() {
         return new StringJoiner(", ", Conta.class.getSimpleName() + "[", "]")
                 .add("id=" + id)
                 .add("nome='" + nome + "'")
                 .add("chave='" + chave + "'")
+                .add("chaveVendedor='" + chaveVendedor + "'")
+                .add("chaveComprador='" + chaveComprador + "'")
+                .add("telefone='" + telefone + "'")
                 .toString();
-    }
-
-    public Conta(String nome, String chave) {
-        this.nome = nome;
-        this.chave = chave;
     }
 
     public Long getId() {
@@ -60,5 +72,29 @@ public class Conta implements Serializable {
 
     public void setChave(String chave) {
         this.chave = chave;
+    }
+
+    public String getChaveVendedor() {
+        return chaveVendedor;
+    }
+
+    public void setChaveVendedor(String chaveVendedor) {
+        this.chaveVendedor = chaveVendedor;
+    }
+
+    public String getChaveComprador() {
+        return chaveComprador;
+    }
+
+    public void setChaveComprador(String chaveComprador) {
+        this.chaveComprador = chaveComprador;
+    }
+
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
     }
 }

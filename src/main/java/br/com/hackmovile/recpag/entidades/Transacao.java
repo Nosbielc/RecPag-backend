@@ -20,10 +20,10 @@ public class Transacao implements Serializable {
     @Column(name = "vlr_transacao", nullable = false, precision = 2)
     private Float valorTransacao;
 
-    @Column(name = "vlr_descricao", nullable = false, precision = 2)
+    @Column(name = "str_descricao", nullable = false, precision = 2)
     private String descricao;
 
-    @Column(name = "vlr_autenticador", nullable = false, precision = 2)
+    @Column(name = "str_autenticador", nullable = false, precision = 2)
     private String autenticador;
 
     @Column(name = "dt_transacao", nullable = false)
@@ -43,8 +43,11 @@ public class Transacao implements Serializable {
     @Enumerated(EnumType.ORDINAL)
     private TransacaoTipo transacaoTipo;
 
-    public Transacao(Float valorTransacao, String descricao, String autenticador, Date dataHoratransacao, Conta origem,
-                     Conta destino, TransacaoStatus transacaoStatus, TransacaoTipo transacaoTipo) {
+    public Transacao() {
+    }
+
+    public Transacao(Float valorTransacao, String descricao, String autenticador, Date dataHoratransacao,
+                     Conta origem, Conta destino, TransacaoStatus transacaoStatus, TransacaoTipo transacaoTipo) {
         this.valorTransacao = valorTransacao;
         this.descricao = descricao;
         this.autenticador = autenticador;

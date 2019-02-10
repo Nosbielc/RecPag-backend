@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -51,5 +52,16 @@ public class TransacaoServicoImpl implements ITransacaoServico {
     public List<Transacao> findAllByOrigemOrDestinoOrderByIdAsc(Conta origem, Conta destino) {
         return this.transacaoRepositorio.findAllByOrigemOrDestinoOrderByIdAsc(origem, destino);
     }
+
+    @Override
+    public Page<Transacao> findAllByOrigemOrDestinoOrderByIdAsc(Conta origem, Conta destino, Pageable pageable) {
+        return this.transacaoRepositorio.findAllByOrigemOrDestinoOrderByIdAsc(origem, destino, pageable);
+    }
+
+    @Override
+    public Float saldoConta(Long idConta) {
+        return this.transacaoRepositorio.saldoConta(idConta);
+    }
+
 
 }

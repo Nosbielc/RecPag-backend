@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
+import java.util.HashMap;
 
 public interface ITransacaoController {
 
@@ -47,6 +48,21 @@ public interface ITransacaoController {
                                                         @RequestParam(value = "ord", defaultValue = "id") String ord,
                                                         @RequestParam(value = "dir", defaultValue = "DESC") String dir,
                                                         @RequestParam(value = "conta", defaultValue = "") String conta)
+            throws Exception;
+
+
+
+    @ApiOperation(value = "Lista de transacoes", nickname = "Transacaoes", notes = "Lista as transacoes do usuario.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Success", responseContainer = "Map", response = HashMap.class),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 500, message = "Failure")})
+    ResponseEntity<HashMap<String, Object>> listarTransacoes(@RequestParam(value = "pag", defaultValue = "0") Integer pag,
+                                             @RequestParam(value = "ord", defaultValue = "id") String ord,
+                                             @RequestParam(value = "dir", defaultValue = "DESC") String dir,
+                                             @RequestParam(value = "conta", defaultValue = "") String conta)
             throws Exception;
 
 }

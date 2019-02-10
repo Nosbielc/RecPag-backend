@@ -7,6 +7,7 @@
      str_chave varchar(255) not null,
      str_chave_vendedor varchar(255) not null,
      str_chave_comprador varchar(255) not null,
+     str_telefone varchar(255) not null,
      primary key (id)
  );
 
