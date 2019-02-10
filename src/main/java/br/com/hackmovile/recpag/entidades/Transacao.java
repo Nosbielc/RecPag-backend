@@ -20,6 +20,12 @@ public class Transacao implements Serializable {
     @Column(name = "vlr_transacao", nullable = false, precision = 2)
     private Float valorTransacao;
 
+    @Column(name = "vlr_descricao", nullable = false, precision = 2)
+    private String descricao;
+
+    @Column(name = "vlr_autenticador", nullable = false, precision = 2)
+    private String autenticador;
+
     @Column(name = "dt_transacao", nullable = false)
     @CreatedBy
     @Temporal(TemporalType.TIMESTAMP)
@@ -37,22 +43,11 @@ public class Transacao implements Serializable {
     @Enumerated(EnumType.ORDINAL)
     private TransacaoTipo transacaoTipo;
 
-    @Override
-    public String toString() {
-        return new StringJoiner(", ", Transacao.class.getSimpleName() + "[", "]")
-                .add("id=" + id)
-                .add("valorTransacao=" + valorTransacao)
-                .add("dataHoratransacao=" + dataHoratransacao)
-                .add("origem=" + origem)
-                .add("destino=" + destino)
-                .add("transacaoStatus=" + transacaoStatus)
-                .add("transacaoTipo=" + transacaoTipo)
-                .toString();
-    }
-
-    public Transacao(Float valorTransacao, Date dataHoratransacao, Conta origem, Conta destino,
-                     TransacaoStatus transacaoStatus, TransacaoTipo transacaoTipo) {
+    public Transacao(Float valorTransacao, String descricao, String autenticador, Date dataHoratransacao, Conta origem,
+                     Conta destino, TransacaoStatus transacaoStatus, TransacaoTipo transacaoTipo) {
         this.valorTransacao = valorTransacao;
+        this.descricao = descricao;
+        this.autenticador = autenticador;
         this.dataHoratransacao = dataHoratransacao;
         this.origem = origem;
         this.destino = destino;
@@ -74,6 +69,22 @@ public class Transacao implements Serializable {
 
     public void setValorTransacao(Float valorTransacao) {
         this.valorTransacao = valorTransacao;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
+    public String getAutenticador() {
+        return autenticador;
+    }
+
+    public void setAutenticador(String autenticador) {
+        this.autenticador = autenticador;
     }
 
     public Date getDataHoratransacao() {
@@ -114,5 +125,20 @@ public class Transacao implements Serializable {
 
     public void setTransacaoTipo(TransacaoTipo transacaoTipo) {
         this.transacaoTipo = transacaoTipo;
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", Transacao.class.getSimpleName() + "[", "]")
+                .add("id=" + id)
+                .add("valorTransacao=" + valorTransacao)
+                .add("descricao='" + descricao + "'")
+                .add("autenticador='" + autenticador + "'")
+                .add("dataHoratransacao=" + dataHoratransacao)
+                .add("origem=" + origem)
+                .add("destino=" + destino)
+                .add("transacaoStatus=" + transacaoStatus)
+                .add("transacaoTipo=" + transacaoTipo)
+                .toString();
     }
 }

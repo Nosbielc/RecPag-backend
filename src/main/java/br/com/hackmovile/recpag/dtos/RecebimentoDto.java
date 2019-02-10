@@ -17,8 +17,9 @@ public class RecebimentoDto extends TransacaoDto implements Serializable {
     }
 
     public RecebimentoDto(String origem, String destino, String valor, String keyTransacao,
-                          TransacaoTipo transacaoTipo, TransacaoStatus transacaoStatus, String descricaoRecimento) {
-        super(origem, destino, valor, keyTransacao, transacaoTipo, transacaoStatus);
+                          TransacaoTipo transacaoTipo, TransacaoStatus transacaoStatus, String descricaoRecimento,
+                          String autenticador) {
+        super(origem, destino, valor, keyTransacao, transacaoTipo, transacaoStatus, autenticador);
         this.descricaoRecimento = descricaoRecimento;
     }
 

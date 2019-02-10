@@ -27,17 +27,21 @@ public class TransacaoDto implements Serializable {
 
     private TransacaoStatus transacaoStatus;
 
+    private String autenticador;
+
     public TransacaoDto() {
     }
 
     public TransacaoDto(String origem, String destino, String valor, String keyTransacao,
-                        TransacaoTipo transacaoTipo, TransacaoStatus transacaoStatus) {
+                        TransacaoTipo transacaoTipo, TransacaoStatus transacaoStatus,
+                        String autenticador) {
         this.origem = origem;
         this.destino = destino;
         this.valor = valor;
         this.keyTransacao = keyTransacao;
         this.transacaoTipo = transacaoTipo;
         this.transacaoStatus = transacaoStatus;
+        this.autenticador = autenticador;
     }
 
     @Override
@@ -49,6 +53,7 @@ public class TransacaoDto implements Serializable {
                 .add("keyTransacao='" + keyTransacao + "'")
                 .add("transacaoTipo=" + transacaoTipo)
                 .add("transacaoStatus=" + transacaoStatus)
+                .add("autenticador=" + autenticador)
                 .toString();
     }
 
@@ -98,5 +103,13 @@ public class TransacaoDto implements Serializable {
 
     public void setTransacaoStatus(TransacaoStatus transacaoStatus) {
         this.transacaoStatus = transacaoStatus;
+    }
+
+    public String getAutenticador() {
+        return autenticador;
+    }
+
+    public void setAutenticador(String autenticador) {
+        this.autenticador = autenticador;
     }
 }

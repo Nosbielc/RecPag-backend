@@ -1,2 +1,0 @@
-insert into conta(id, str_nome, str_chave, str_chave_vendedor, str_chave_comprador) VALUES (NULL, '96728947248', '96728947248', 'ea3d93fff2744eb7927939e83866ddbe', 'a9d8019d97f642b7a8ca0e72e5a34b4c' );
-insert into conta(id, str_nome, str_chave, str_chave_vendedor, str_chave_comprador) VALUES (NULL, '51761046446', '51761046446', '8b9d0c6f15b04b11b59d49c178fe8f64', '948fa78e17cd4c1694f3c5e83ce21231' );

@@ -1,5 +1,5 @@
 -- noinspection SqlNoDataSourceInspectionForFile
--- create sequence HIBERNATE_SEQUENCE;
+ create sequence HIBERNATE_SEQUENCE;
 
  create table conta (
      id bigint auto_increment not null,
@@ -13,6 +13,8 @@
  create table transacao (
     id bigint auto_increment not null,
     vlr_transacao DECIMAL(20, 2) not null,
+    str_descricao varchar(255) not null,
+    str_autenticador varchar(255) not null,
     dt_transacao timestamp not null,
     origem_id bigint not null,
     destino_id bigint not null,

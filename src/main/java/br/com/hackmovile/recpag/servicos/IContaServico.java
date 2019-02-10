@@ -19,4 +19,6 @@ public interface IContaServico {
 
     Optional<List<Conta>> findAll();
 
+    Conta findByChave(String chave);
+
 }

@@ -32,6 +32,7 @@ public interface ITransacaoController {
             @ApiResponse(code = 403, message = "Forbidden"),
             @ApiResponse(code = 404, message = "Not Found"),
             @ApiResponse(code = 500, message = "Failure")})
+    @Deprecated
     ResponseEntity<Response<RecebimentoDto>> recebimento(@Valid @RequestBody RecebimentoDto recebimentoDto)
             throws Exception;
 

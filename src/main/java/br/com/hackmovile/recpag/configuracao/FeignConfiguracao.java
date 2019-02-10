@@ -1,6 +1,6 @@
 package br.com.hackmovile.recpag.configuracao;
 
-import br.com.hackmovile.recpag.cliente.ClienteZoop;
+import br.com.hackmovile.recpag.cliente.IClienteZoop;
 import feign.Request;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
@@ -11,8 +11,8 @@ import org.springframework.core.env.ConfigurableEnvironment;
 
 @Configuration
 @EnableDiscoveryClient
-@EnableFeignClients(basePackageClasses = { ClienteZoop.class })
-@ComponentScan(basePackageClasses = { ClienteZoop.class })
+@EnableFeignClients(basePackageClasses = { IClienteZoop.class })
+@ComponentScan(basePackageClasses = { IClienteZoop.class })
 public class FeignConfiguracao {
 
     /**

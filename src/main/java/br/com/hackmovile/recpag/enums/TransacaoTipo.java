@@ -2,5 +2,8 @@ package br.com.hackmovile.recpag.enums;
 
 public enum TransacaoTipo {
     CREDITO,
-    DEBITO
+    DEBITO,
+    CARGA_BOLETO,
+    CARGA_TED,
+    CARGA_DOC
 }

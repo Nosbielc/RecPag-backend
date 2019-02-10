@@ -45,4 +45,9 @@ public class ContaServicoImpl implements IContaServico {
     public Optional<List<Conta>> findAll() {
         return Optional.ofNullable(this.contaRepositorio.findAll());
     }
+
+    @Override
+    public Conta findByChave(String chave) {
+        return this.contaRepositorio.findByChave(chave);
+    }
 }
