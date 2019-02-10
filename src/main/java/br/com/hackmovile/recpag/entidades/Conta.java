@@ -18,6 +18,12 @@ public class Conta implements Serializable {
     @Column(name = "str_chave", nullable = false)
     private String chave;
 
+    @Column(name = "str_chave_vendedor", nullable = false)
+    private String chaveVendedor;
+
+    @Column(name = "str_chave_comprador", nullable = false)
+    private String chaveComprador;
+
     @Override
     public String toString() {
         return new StringJoiner(", ", Conta.class.getSimpleName() + "[", "]")

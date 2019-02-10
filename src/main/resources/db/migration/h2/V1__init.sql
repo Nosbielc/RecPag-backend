@@ -5,10 +5,12 @@
      id bigint auto_increment not null,
      str_nome varchar(255) not null,
      str_chave varchar(255) not null,
+     str_chave_vendedor varchar(255) not null,
+     str_chave_comprador varchar(255) not null,
      primary key (id)
  );
 
- create table transferencia (
+ create table transacao (
     id bigint auto_increment not null,
     vlr_transacao DECIMAL(20, 2) not null,
     dt_transacao timestamp not null,
