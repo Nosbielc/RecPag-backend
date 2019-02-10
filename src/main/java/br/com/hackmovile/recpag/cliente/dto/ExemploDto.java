@@ -1,4 +1,4 @@
-package br.com.hackmovile.recpag.client.dto;
+package br.com.hackmovile.recpag.cliente.dto;
 
 import java.io.Serializable;
 import java.util.StringJoiner;

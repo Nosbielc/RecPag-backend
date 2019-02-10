@@ -1,31 +1,25 @@
 -- noinspection SqlNoDataSourceInspectionForFile
-create sequence CDS_SEQ;
- create sequence CS_SEQ;
- create sequence HIBERNATE_SEQUENCE;
+-- create sequence HIBERNATE_SEQUENCE;
 
- create table banco (
+ create table conta (
      id bigint auto_increment not null,
-     cod_banco bigint not null,
-     str_nome_base varchar(255) not null,
      str_nome varchar(255) not null,
-     is_ativo integer not null,
+     str_chave varchar(255) not null,
      primary key (id)
  );
 
  create table transferencia (
     id bigint auto_increment not null,
-    str_autenticacao varchar(255) not null,
-    vlr_transferencia DECIMAL(20, 2) not null,
-    dt_transferencia timestamp not null,
-    banco_origem_id bigint not null,
-    str_conta_origem varchar(255) not null,
-    transferencia_status integer not null,
-    banco_destino_id bigint not null,
-    str_conta_destino varchar(255) not null,
+    vlr_transacao DECIMAL(20, 2) not null,
+    dt_transacao timestamp not null,
+    origem_id bigint not null,
+    destino_id bigint not null,
+    transacao_status integer not null,
+    transacao_tipo integer not null,
     primary key (id)
  );
 
- alter table transferencia add constraint FK_BANCO_ORIGEM foreign key (banco_origem_id) references banco;
- alter table transferencia add constraint FK_BANCO_DESTINO foreign key (banco_destino_id) references banco;
+ alter table transacao add constraint FK_CONTA_ORIGEM foreign key (origem_id) references conta;
+ alter table transacao add constraint FK_CONTA_DESTINO foreign key (destino_id) references conta;
 
 

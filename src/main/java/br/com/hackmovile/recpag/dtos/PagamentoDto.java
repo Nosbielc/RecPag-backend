@@ -1,70 +1,39 @@
 package br.com.hackmovile.recpag.dtos;
 
+import br.com.hackmovile.recpag.enums.TransacaoStatus;
+import br.com.hackmovile.recpag.enums.TransacaoTipo;
+
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.util.StringJoiner;
 
-public class PagamentoDto implements Serializable {
+public class PagamentoDto extends TransacaoDto implements Serializable {
 
-    private String origem;
-    private String destino;
-    private String valor;
-    private String keyTransacao;
+    @NotEmpty(message = "descricao não pode ser null.")
+    private String descricao;
 
-    public PagamentoDto() {
+    public PagamentoDto(String descricao) {
+        this.descricao = descricao;
     }
 
-    public PagamentoDto(String origem, String destino, String valor) {
-        this.origem = origem;
-        this.destino = destino;
-        this.valor = valor;
-    }
-
-    public PagamentoDto(String origem, String destino, String valor, String keyTransacao) {
-        this.origem = origem;
-        this.destino = destino;
-        this.valor = valor;
-        this.keyTransacao = keyTransacao;
+    public PagamentoDto(String origem, String destino, String valor, String keyTransacao,
+                        TransacaoTipo transacaoTipo, TransacaoStatus transacaoStatus, String descricao) {
+        super(origem, destino, valor, keyTransacao, transacaoTipo, transacaoStatus);
+        this.descricao = descricao;
     }
 
     @Override
     public String toString() {
         return new StringJoiner(", ", PagamentoDto.class.getSimpleName() + "[", "]")
-                .add("origem='" + origem + "'")
-                .add("destino='" + destino + "'")
-                .add("valor='" + valor + "'")
-                .add("keyTransacao='" + keyTransacao + "'")
+                .add("descricao='" + descricao + "'")
                 .toString();
     }
 
-    public String getOrigem() {
-        return origem;
+    public String getDescricao() {
+        return descricao;
     }
 
-    public void setOrigem(String origem) {
-        this.origem = origem;
-    }
-
-    public String getDestino() {
-        return destino;
-    }
-
-    public void setDestino(String destino) {
-        this.destino = destino;
-    }
-
-    public String getValor() {
-        return valor;
-    }
-
-    public void setValor(String valor) {
-        this.valor = valor;
-    }
-
-    public String getKeyTransacao() {
-        return keyTransacao;
-    }
-
-    public void setKeyTransacao(String keyTransacao) {
-        this.keyTransacao = keyTransacao;
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 }
